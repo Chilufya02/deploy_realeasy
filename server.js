@@ -86,11 +86,7 @@ const buildDirectory = path.join(__dirname, 'public');
 if (fs.existsSync(buildDirectory)) {
   app.use(express.static(buildDirectory));
 
-  app.get('*', (req, res, next) => {
-    if (req.path.startsWith('/api') || req.path.startsWith('/uploads')) {
-      return next();
-    }
-
+  app.get(/^\/(?!api|uploads).*/, (req, res) => {
     res.sendFile(path.join(buildDirectory, 'index.html'));
   });
 }
